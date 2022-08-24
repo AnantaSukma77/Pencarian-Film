@@ -1,27 +1,29 @@
 //event handler
-const searchBtn = document.querySelector('.search-button');
+const searchBtn = document.querySelector('.search-button'); // DOM get search button
 searchBtn.addEventListener('click', function () {
-  const inputKeyword = document.querySelector('.input-keyword');
-  fetch('http://www.omdbapi.com/?apikey=e179c589&s=' + inputKeyword.value)
-    .then((response) => response.json())
+  // add Event Listener Klik
+  const inputKeyword = document.querySelector('.input-keyword'); // get value in input box
+  fetch('http://www.omdbapi.com/?apikey=e179c589&s=' + inputKeyword.value) // fetch API untuk cari link film
+    .then((response) => response.json()) // jika fulfill tangkap respon dan ubah respon menjadi json
     .then((response) => {
-      const movies = response.Search;
-      let cards = '';
-      movies.forEach((m) => (cards += showCards(m)));
-      const movieContainer = document.querySelector('.movie-container');
-      movieContainer.innerHTML = cards;
+      const movies = response.Search; // untuk mmasuk ke object Search (jika tidak ada maka tidak perlu)
+      let cards = ''; // inisiasi Card untuk ditumpuk Looping
+      movies.forEach((m) => (cards += showCards(m))); // Looping card
+      const movieContainer = document.querySelector('.movie-container'); // Get class untuk dimasukan cards hasil looping
+      movieContainer.innerHTML = cards; // memasukan cards ke HTML
 
       //ketika tombol detail di klik
-      const modalDetailBtn = document.querySelectorAll('.modal-detail-button');
+      const modalDetailBtn = document.querySelectorAll('.modal-detail-button'); //get Detail Button
       modalDetailBtn.forEach((btn) => {
+        //Detail Button di looping
         btn.addEventListener('click', function () {
-          const imdbid = this.dataset.imdbid;
-          fetch('http://www.omdbapi.com/?apikey=e179c589&i=' + imdbid)
-            .then((response) => response.json())
+          const imdbid = this.dataset.imdbid; // dataset digunakan untuk mengambil value ID imdb di atribut data di HTML, atribut data ada di class button
+          fetch('http://www.omdbapi.com/?apikey=e179c589&i=' + imdbid) //fetch API dengan id imdb
+            .then((response) => response.json()) //tangkap respon saat fullfil menjadi json
             .then((m) => {
-              const movieDetail = showMovieDetail(m);
-              const modalBody = document.querySelector('.modal-body');
-              modalBody.innerHTML = movieDetail;
+              const movieDetail = showMovieDetail(m); // tampilan show movie ditangkap variabel
+              const modalBody = document.querySelector('.modal-body'); //get class untuk memasang show movie
+              modalBody.innerHTML = movieDetail; //masukan ke dalam HTML
             });
         });
       });
